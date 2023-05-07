@@ -93,7 +93,8 @@
          ("C-d" . ivy-reverse-i-search-kill))
   :config
   (ivy-mode 1))
- 
+
+;; Bottom Modeline
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1)
@@ -103,3 +104,10 @@
 ;; For Emacs Parenthies checking
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
+
+;; Which Key
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 1))
