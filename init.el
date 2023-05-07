@@ -56,6 +56,15 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(column-number-mode)
+(global-display-line-numbers-mode t)
+
+;; Disable line numbers for some modes
+(dolist (mode '(org-mode-hook
+                term-mode-hook
+                eshell-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
 ;; Counsel setup
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
@@ -89,3 +98,8 @@
   :ensure t
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
+
+
+;; For Emacs Parenthies checking
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
