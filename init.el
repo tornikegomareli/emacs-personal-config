@@ -6,17 +6,11 @@
 (set-fringe-mode 10) ; Give some breathing room
 (menu-bar-mode -1) ; Disable the menu bar
 
-;; Set up the visible bell
-(setq visible-bell t)
-
 ;; Make ESCc qquit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Font Fira code size 200 because of DP
 (set-face-attribute 'default nil :font "Fira Code" :height 200 )
-
-;; Load theme 
-(load-theme 'wombat)
 
 ;; Make Full screen when open Emacs
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -44,6 +38,7 @@
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
+
 
 (package-initialize)
 (unless package-archive-contents
@@ -100,6 +95,8 @@
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
 
+(use-package doom-themes)
+
 
 ;; For Emacs Parenthies checking
 (use-package rainbow-delimiters
@@ -111,3 +108,17 @@
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 1))
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
