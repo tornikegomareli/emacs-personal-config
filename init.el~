@@ -6,11 +6,17 @@
 (set-fringe-mode 10) ; Give some breathing room
 (menu-bar-mode -1) ; Disable the menu bar
 
+;; Set up the visible bell
+(setq visible-bell t)
+
 ;; Make ESCc qquit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Font Fira code size 200 because of DP
 (set-face-attribute 'default nil :font "Fira Code" :height 200 )
+
+;; Load theme 
+(load-theme 'wombat)
 
 ;; Make Full screen when open Emacs
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -38,7 +44,6 @@
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
-
 
 (package-initialize)
 (unless package-archive-contents
@@ -95,6 +100,7 @@
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)))
 
+
 ;; For Emacs Parenthies checking
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -105,82 +111,16 @@
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 1))
-
-(use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
-
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
-
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
  '(package-selected-packages
-   '(hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
+   '(which-key rainbow-delimiters use-package doom-modeline counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-(use-package doom-themes
-  :init (load-theme 'doom-dracula t))
-
-(use-package all-the-icons
-   :init
-   (unless (member "all-the-icons" (font-family-list))
-     (all-the-icons-install-fonts t)))
-
-
-;; Global Key Bindings
-(general-define-key
- :states '(normal insert visual emacs)
- "C-f" 'counsel-find-file
- "C-r" 'counsel-switch-buffer)
-
-(use-package general
-  :config
-  (general-create-definer rune/leader-keys
-    :keymaps '(normal insert visual emacs)
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-
-  (rune/leader-keys
-    "t"  '(:ignore t :which-key "toggles")
-    "tt" '(counsel-load-theme :which-key "choose theme")))
-
-;; Make Enter works in all mode in mini buffers with Evil mode
-;; We have a problem here, Enter does not works whenever we are in counsel-find-file buffer
-
-;; Eval configuraation VI
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
