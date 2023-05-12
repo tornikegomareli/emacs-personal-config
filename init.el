@@ -156,7 +156,7 @@
   :config
   (general-create-definer rune/leader-keys
     :keymaps '(normal insert visual emacs)
-    :prefix "SPC"
+    :prefix "C-SPC"
     :global-prefix "C-SPC")
 
   (rune/leader-keys
@@ -164,7 +164,10 @@
     "tt" '(counsel-load-theme :which-key "choose theme")))
 
 ;; Make Enter works in all mode in mini buffers with Evil mode
-;; We have a problem here, Enter does not works whenever we are in counsel-find-file buffer
+(defun my-minibuffer-setup ()
+  (define-key minibuffer-local-map (kbd "RET") 'minibuffer-complete-and-exit))
+
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup)
 
 ;; Eval configuraation VI
 (use-package evil
@@ -176,7 +179,6 @@
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
   ;; Use visual line motions even outside of visual-line-mode buffers
   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
@@ -184,3 +186,17 @@
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
+
+(rune/leader-keys
+  "ts" '(hydra-text-scale/body :which-key "scale text"))
