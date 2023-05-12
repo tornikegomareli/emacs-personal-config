@@ -152,6 +152,12 @@
  "C-f" 'counsel-find-file
  "C-r" 'counsel-switch-buffer)
 
+;; Whenever we call this function, it opens our init.el
+(setq vc-follow-symlinks t) ; This is for opening config symlink file inside emacs, without prompt question
+(defun open-init-file ()
+  (interactive)
+  (find-file user-init-file))
+
 (use-package general
   :config
   (general-create-definer rune/leader-keys
@@ -161,7 +167,11 @@
 
   (rune/leader-keys
     "t"  '(:ignore t :which-key "toggles")
-    "tt" '(counsel-load-theme :which-key "choose theme")))
+    "tt" '(counsel-load-theme :which-key "choose theme")
+    "ts" '(hydra-text-scale/body :which-key "scale text")
+    "c"  'open-init-file))
+ 
+
 
 ;; Make Enter works in all mode in mini buffers with Evil mode
 (defun my-minibuffer-setup ()
@@ -197,6 +207,3 @@
   ("j" text-scale-increase "in")
   ("k" text-scale-decrease "out")
   ("f" nil "finished" :exit t))
-
-(rune/leader-keys
-  "ts" '(hydra-text-scale/body :which-key "scale text"))
