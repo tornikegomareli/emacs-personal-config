@@ -129,7 +129,7 @@
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
  '(package-selected-packages
-   '(hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
+   '(counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -149,7 +149,7 @@
 ;; Global Key Bindings
 (general-define-key
  :states '(normal insert visual emacs)
- "C-f" 'counsel-find-file
+ "s-f" 'counsel-find-file
  "C-r" 'counsel-switch-buffer)
 
 ;; Whenever we call this function, it opens our init.el
@@ -207,3 +207,26 @@
   ("j" text-scale-increase "in")
   ("k" text-scale-decrease "out")
   ("f" nil "finished" :exit t))
+
+;; Run project C-c p u
+;; Run tests: C-c p P
+;; Edit dir-locals: C-c p E (reload with hack-dir-local-variables-non-file-buffer)
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/Users/tornike-mac/Development")
+    (setq projectile-project-search-path '("~/Users/tornike-mac/Development")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+;; counsel-projectile
+;; https://github.com/ericdanan/counsel-projectile
+;; Advanced project switching: C-c p p
+;; Quick searching with counsel-projectile-rg - C-c p s r
+;; Results to buffer with C-c C-o
+(use-package counsel-projectile
+ :after projectile
+ :config
+ (counsel-projectile-mode 1))
