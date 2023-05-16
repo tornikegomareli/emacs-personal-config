@@ -73,7 +73,7 @@
 ;; Ivy - Auto completion for Emacs and Swiper which is file Search engine
 (use-package ivy
   :diminish
-  :bind (("C-s" . swiper)
+  :bind (("s-f" . swiper)
          :map ivy-minibuffer-map
          ("TAB" . ivy-alt-done)	
          ("C-l" . ivy-alt-done)
@@ -149,7 +149,7 @@
 ;; Global Key Bindings
 (general-define-key
  :states '(normal insert visual emacs)
- "s-f" 'counsel-find-file
+ "C-f" 'counsel-find-file
  "C-r" 'counsel-switch-buffer)
 
 ;; Whenever we call this function, it opens our init.el
