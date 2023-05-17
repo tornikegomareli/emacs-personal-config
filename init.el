@@ -129,7 +129,7 @@
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
  '(package-selected-packages
-   '(counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
+   '(evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -230,3 +230,22 @@
  :after projectile
  :config
  (counsel-projectile-mode 1))
+
+;; https://github.com/magit/magit
+;; https://magit.vc/
+;; https://magit.vc/manual/magit/
+(use-package magit
+  :commands (magit-status magit-get-current-branch)
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+;; Operations
+;; Run magit-status in buffer from Git repo, press ? for command panel.
+;; Refresh buffer with g r
+;; Diffs
+;; Commit log
+;; Blame
+;; Stashes
+;; Branches
+;; Rebase
+;; Pull/push
