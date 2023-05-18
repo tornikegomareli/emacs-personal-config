@@ -1,5 +1,3 @@
-(setq inhibit-startup-message t) ;; Remove startup message
-
 (scroll-bar-mode -1) ; Disable visible scrollbar
 (tool-bar-mode -1) ; Disalbe the toolbar
 (tooltip-mode -1) ; Disable tooltips
@@ -90,10 +88,43 @@
   (ivy-mode 1))
 
 ;; Bottom Modeline
+;; Config and install modeline
 (use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+  :hook (after-init . doom-modeline-mode)
+  :config
+  (custom-set-faces
+   '(mode-line ((t (:family "SF Mono" :height 0.85)))))
+  (custom-set-faces
+   '(mode-line-inactive ((t (:family "SF Mono" :height 0.85)))))
+
+  (setq doom-modeline-buffer-encoding nil
+        doom-modeline-percent-position nil
+        doom-modeline-buffer-file-name-style 'file-name
+        doom-modeline-checker-simple-format t
+        doom-modeline-vcs-max-length 50
+        doom-modeline-major-mode-icon nil
+        doom-modeline-project-detection 'projectile
+        doom-modeline-icon t
+        doom-modeline-modal t
+        doom-modeline-modal-icon nil
+        doom-modeline-lsp t
+        doom-modeline-workspace-name nil
+        doom-modeline-persp-name nil
+        doom-modeline-bar-width 5
+        doom-modeline-height 38
+        doom-modeline-hud nil
+	doom-modeline-window-width-limit 85
+	doom-modeline-project-detection 'auto
+        doom-modeline-buffer-state-icon nil
+	doom-modeline-buffer-name t
+	doom-modeline-env-enable-swift t
+        doom-modeline-time-icon nil)
+  (setq evil-normal-state-tag   (propertize "NORMAL" 'face '((:background "green" :foreground "black")))
+        evil-emacs-state-tag    (propertize "EMACS" 'face '((:background "orange" :foreground "black")))
+        evil-insert-state-tag   (propertize "INSERT" 'face '((:background "red") :foreground "white"))
+        evil-motion-state-tag   (propertize "MOTION" 'face '((:background "blue") :foreground "white"))
+        evil-visual-state-tag   (propertize "VISUAL" 'face '((:background "grey80" :foreground "black")))
+        evil-operator-state-tag (propertize "OPERATOR" 'face '((:background "purple")))))
 
 ;; For Emacs Parenthies checking
 (use-package rainbow-delimiters
@@ -129,7 +160,7 @@
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
  '(package-selected-packages
-   '(evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
+   '(treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -137,7 +168,16 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; Theming
 (use-package doom-themes
+  :after doom-modeline
+  :config
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t  ; if nil, italics is universally disabled
+        doom-themes-treemacs-theme "doom-colors")
+  (doom-themes-visual-bell-config)
+  (doom-themes-treemacs-config)
+  (doom-themes-org-config))(use-package doom-themes
   :init (load-theme 'doom-dracula t))
 
 (use-package all-the-icons
@@ -231,6 +271,7 @@
  :config
  (counsel-projectile-mode 1))
 
+;; 🦄
 ;; https://github.com/magit/magit
 ;; https://magit.vc/
 ;; https://magit.vc/manual/magit/
@@ -249,3 +290,10 @@
 ;; Branches
 ;; Rebase
 ;; Pull/push
+
+
+;; Welcome Dashboard
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
