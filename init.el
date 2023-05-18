@@ -3,12 +3,16 @@
 (tooltip-mode -1) ; Disable tooltips
 (set-fringe-mode 10) ; Give some breathing room
 (menu-bar-mode -1) ; Disable the menu bar
+(display-battery-mode t) ; Show battery
+(display-time-mode t) ; Show time
+
 
 ;; Make ESCc qquit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Font Fira code size 200 because of DP
-(set-face-attribute 'default nil :font "Fira Code" :height 200 )
+;; (set-face-attribute 'default nil :font "Iosevka Aile" :height 170 :weight 'light)
+(set-face-attribute 'default nil :font "Fira Code" :height 170)
 
 ;; Make Full screen when open Emacs
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
