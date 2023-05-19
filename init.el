@@ -304,7 +304,7 @@
 
 (setq
  dashboard-banner-logo-title "Welcome Tornike 🚀, Have a happy Emacs Day! 🦸🏻‍♂️"
- dashboard-startup-banner "~/mfemacs/themes/true.png")
+ dashboard-startup-banner "~/mfemacs/themes/emacs.png")
 
 (use-package nerd-icons
   :custom
@@ -315,3 +315,8 @@
 
 (use-package nerd-icons-dired
   :hook (dired-mode . nerd-icons-dired-mode))
+
+(use-package nyan-mode
+  :ensure t
+  :init
+  (nyan-mode 1))
