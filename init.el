@@ -320,3 +320,21 @@
   :ensure t
   :init
   (nyan-mode 1))
+
+(add-to-list 'load-path "~/mfemacs/localpackages/")
+
+(use-package swift-mode
+  :defer t
+  :mode "\\.swift\\'"
+  :config
+  (setq swift-mode:basic-offset 2
+        swift-mode:parenthesized-expression-offset 2
+        swift-mode:multiline-statement-offset 2
+        swift-mode:highlight-anchor t))
+
+(add-hook 'swift-mode-hook (lambda () (lsp)))
+
+(use-package lsp-sourcekit
+  :after lsp-mode
+  :config
+  (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
