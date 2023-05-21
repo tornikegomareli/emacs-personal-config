@@ -350,8 +350,20 @@
 
 (add-hook 'swift-mode-hook (lambda () (lsp)))
 
-(use-package lsp-sourcekit
-  :after lsp-mode
-  :config
-  (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
+;; (use-package lsp-sourcekit
+;;  :after lsp-mode
+;;  :config
+;;  (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
 
+;; EGLOT - LSP client
+;; (use-package eglot
+;;    :ensure t
+;;    :hook (swift-mode . eglot-ensure)
+;;    :config
+;;    (add-to-list 'eglot-server-programs '(swift-mode . ("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))))
+
+(use-package eglot
+    :ensure t
+    :hook (swift-mode . eglot-ensure)
+    :config
+    (add-to-list 'eglot-server-programs '(swift-mode . ("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))))
