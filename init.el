@@ -10,13 +10,20 @@
 ;; Make ESCc qquit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-;; Font Fira code size 200 because of DP
-;; (set-face-attribute 'default nil :font "Iosevka Aile" :height 170 :weight 'light)
-(set-face-attribute 'default nil :font "Fira Code" :height 170)
+;; Theme
+(set-face-attribute 'default nil :font "Office Code Pro D" :height 170)
 
 ;; Make Full screen when open Emacs
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;;
+
+;; Modus Themes
+;; (add-to-list 'load-path "~/.emacs.d/modus-themes")
+;; (load-theme 'modus-operandi)            ; Light theme
+;; (load-theme 'modus-vivendi)             ; Dark theme
+
+  
+
 
 ;; Mapping macOS keybindings to emacs C,M
 (setq mac-control-modifier 'control)
@@ -31,8 +38,6 @@
 
 ;; Reload file with Control c r
 (global-set-key (kbd "C-c r") 'reload-init-file)
-
-
 
 ;; Initialize package sources
 (require 'package)
@@ -181,8 +186,10 @@
         doom-themes-treemacs-theme "doom-colors")
   (doom-themes-visual-bell-config)
   (doom-themes-treemacs-config)
-  (doom-themes-org-config))(use-package doom-themes
-  :init (load-theme 'doom-dracula t))
+  (doom-themes-org-config))
+(use-package doom-themes
+  :init (load-theme 'doom-xcode t))
+
 
 (use-package all-the-icons
    :init
