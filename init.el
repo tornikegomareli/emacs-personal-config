@@ -356,6 +356,12 @@
         swift-mode:highlight-anchor t))
 
 (add-hook 'swift-mode-hook (lambda () (lsp)))
+(add-hook 'swift-mode-hook
+          (lambda ()
+            (electric-pair-mode 1)
+            (setq electric-pair-pairs '((?{ . ?})))
+            (setq electric-pair-text-pairs '((?{ . ?})))
+            ))
 
 ;; (use-package lsp-sourcekit
 ;;  :after lsp-mode
