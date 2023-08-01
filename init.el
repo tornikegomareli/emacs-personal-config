@@ -168,14 +168,17 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("e3daa8f18440301f3e54f2093fe15f4fe951986a8628e98dcd781efbec7a46f2" default))
+ '(org-agenda-files
+   '("~/Desktop/Org-files/PersonalDevelopment/professional-discipline.org"))
  '(package-selected-packages
-   '(centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
+   '(typescript-mode deno-fmt markdown-soma xcode-mode ob-swiftui centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(mode-line ((t (:family "SF Mono" :height 0.85))))
+ '(mode-line-inactive ((t (:family "SF Mono" :height 0.85)))))
 
 ;; Theming
 (use-package doom-themes
@@ -311,7 +314,7 @@
 
 (setq
  dashboard-banner-logo-title "Welcome Tornike 🚀, Have a happy Emacs Day! 🦸🏻‍♂️"
- dashboard-startup-banner "~/mfemacs/themes/emacs.png")
+ dashboard-startup-banner "~/mfemacs/themes/catppuccin.png")
 
 (use-package nerd-icons
   :custom
@@ -326,7 +329,7 @@
   :config
   (centaur-tabs-mode t)
   :bind
-  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<prior>" . centaur-tab-backward)
   ("C-<next>" . centaur-tabs-forward))
 
 (centaur-tabs-headline-match)
@@ -363,20 +366,42 @@
             (setq electric-pair-text-pairs '((?{ . ?})))
             ))
 
+(use-package ios-simulator
+  :ensure nil
+  :after swift-mode
+  :bind
+  ("C-c x b" . #'ios-simulator:terminate-current-app)
+  ("C-c x c" . #'ios-simulator:appcontainer)
+  ("C-c x l" . #'ios-simulator:change-language))
+
+
+;; Currently we are using EGLOT client for LSP, so we at this moment have commented use-package code for LSP
 ;; (use-package lsp-sourcekit
 ;;  :after lsp-mode
 ;;  :config
 ;;  (setq lsp-sourcekit-executable "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))
-
-;; EGLOT - LSP client
-;; (use-package eglot
-;;    :ensure t
-;;    :hook (swift-mode . eglot-ensure)
-;;    :config
-;;    (add-to-list 'eglot-server-programs '(swift-mode . ("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))))
 
 (use-package eglot
     :ensure t
     :hook (swift-mode . eglot-ensure)
     :config
     (add-to-list 'eglot-server-programs '(swift-mode . ("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/sourcekit-lsp"))))
+
+
+;; Markdown mode
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown")
+  :bind (:map markdown-mode-map
+         ("C-c C-e" . markdown-do)))
+
+;; Deno
+(use-package deno-fmt
+  :ensure t
+  :hook (js2-mode typescript-mode))
+
+(require 'ansi-color)
+(defun colorize-compilation-buffer ()
+  (ansi-color-apply-on-region compilation-filter-start (point-max)))
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
