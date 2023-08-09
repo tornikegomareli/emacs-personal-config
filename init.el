@@ -399,11 +399,6 @@
 ;; Smerge mode
 (setq smerge-command-prefix "\C-cv")
 
-;; Deno
-(use-package deno-fmt
-  :ensure t
-  :hook (js2-mode typescript-mode))
-
 (require 'ansi-color)
 (defun colorize-compilation-buffer ()
   (ansi-color-apply-on-region compilation-filter-start (point-max)))
@@ -451,7 +446,6 @@
   (lsp-idle-delay 0.6)
   ;; enable / disable the hints as you prefer:
   (lsp-inlay-hint-enable t) ;; This option turns on hints if there is such in Rust or Swift analyzer.
-  ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
   (lsp-rust-analyzer-display-chaining-hints t) ;; Chain hints
   (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
@@ -488,3 +482,14 @@
   (yas-reload-all)
   (add-hook 'prog-mode-hook 'yas-minor-mode)
   (add-hook 'text-mode-hook 'yas-minor-mode))
+
+
+;; Deno EGLOT
+;; (add-to-list 'eglot-server-programs '((js-mode typescript-mode) . (eglot-deno "deno" "lsp")))
+;;  (defclass eglot-deno (eglot-lsp-server) ()
+;;    :documentation "A custom class for deno lsp.")
+
+;;  (cl-defmethod eglot-initialization-options ((server eglot-deno))
+;;    "Passes through required deno initialization options"
+;;   (list :enable t
+;;    :lint t))
