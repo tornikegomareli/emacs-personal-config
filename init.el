@@ -427,12 +427,12 @@
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6)
   ;; enable / disable the hints as you prefer:
-  (lsp-inlay-hint-enable t) ;; This option turns on hints if there is such in Rust or Swift analyzer.
-  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  ;; (lsp-inlay-hint-enable nil) ;; This option turns on hints if there is such in Rust or Swift analyzer.
+  ;; (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
   (lsp-rust-analyzer-display-chaining-hints t) ;; Chain hints
-  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  ;;(lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
   (lsp-rust-analyzer-display-closure-return-type-hints t) ;; Closure hints
-  (lsp-rust-analyzer-display-parameter-hints nil) ;; Parameters Hints
+  ;; (lsp-rust-analyzer-display-parameter-hints nil) ;; Parameters Hints
   (lsp-rust-analyzer-display-reborrow-hints nil) ;; Reborrow hints
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
@@ -443,7 +443,7 @@
   :custom
   (lsp-ui-peek-always-show t)
   (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil))
+  (lsp-ui-doc-enable t))
 
 ;; Company Mode
 (use-package company
@@ -598,3 +598,23 @@
   :after (treemacs)
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
+
+
+
+;; Custom shell mode behaviors
+;; Kill the buffer when shell process exists
+(defun my-shell-mode-hook ()
+  "Custom `shell-mode' behaviours."
+  (let* ((proc (get-buffer-process (current-buffer)))
+         (sentinel (process-sentinel proc)))
+    (set-process-sentinel
+     proc
+     `(lambda (process signal)
+        ;; Call the original process sentinel first.
+        (funcall #',sentinel process signal)
+        ;; Kill the buffer on an exit signal.
+        (and (memq (process-status process) '(exit signal))
+             (buffer-live-p (process-buffer process))
+             (kill-buffer (process-buffer process)))))))
+
+(add-hook 'shell-mode-hook 'my-shell-mode-hook)
