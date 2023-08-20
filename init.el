@@ -169,7 +169,7 @@
  '(org-agenda-files
    '("~/Desktop/Org-files/PersonalDevelopment/professional-discipline.org"))
  '(package-selected-packages
-   '(yasnippet lsp-ui rustic rust-mode typescript-mode deno-fmt markdown-soma xcode-mode ob-swiftui centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
+   '(spacemacs-theme yasnippet lsp-ui rustic rust-mode typescript-mode deno-fmt markdown-soma xcode-mode ob-swiftui centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -189,7 +189,7 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 (use-package doom-themes
-  :init (load-theme 'doom-xcode t))
+  :init (load-theme 'spacemacs-dark t))
 
 
 (use-package all-the-icons
@@ -312,7 +312,7 @@
 
 (setq
  dashboard-banner-logo-title "Welcome Tornike 🚀, Have a happy Emacs Day! 🦸🏻‍♂️"
- dashboard-startup-banner "~/mfemacs/themes/catppuccin.png")
+ dashboard-startup-banner "~/mfemacs/themes/emacs.png")
 
 (use-package nerd-icons
   :custom
@@ -320,22 +320,6 @@
   ;; "Symbols Nerd Font Mono" is the default and is recommended
   ;; but you can use any other Nerd Font if you want
   (nerd-icons-font-family "Symbols Nerd Font Mono"))
-
-;; Emacs Tabs
-(use-package centaur-tabs
-  :demand
-  :config
-  (centaur-tabs-mode t)
-  :bind
-  ("C-<prior>" . centaur-tab-backward)
-  ("C-<next>" . centaur-tabs-forward))
-
-(centaur-tabs-headline-match)
-(setq centaur-tabs-style "rounded")
-(setq centaur-tabs-set-icons t)
-(setq centaur-tabs-gray-out-icons 'buffer)
-(setq centaur-tabs-modified-marker "*")
-
 
 (use-package nerd-icons-dired
   :hook (dired-mode . nerd-icons-dired-mode))
