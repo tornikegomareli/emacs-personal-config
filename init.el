@@ -6,12 +6,11 @@
 (display-battery-mode t) ; Show battery
 (display-time-mode t) ; Show time
 
-
 ;; Make ESCc qquit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Theme
-(set-face-attribute 'default nil :font "Office Code Pro D" :height 170)
+(set-face-attribute 'default nil :font "Monaco" :height 170)
 
 ;; Make Full screen when open Emacs
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -59,7 +58,6 @@
 (setq use-package-always-ensure t)
 
 (column-number-mode)
-(global-display-line-numbers-mode t)
 
 ;; Disable line numbers for some modes
 (dolist (mode '(org-mode-hook
@@ -492,4 +490,8 @@
 ;;  (cl-defmethod eglot-initialization-options ((server eglot-deno))
 ;;    "Passes through required deno initialization options"
 ;;   (list :enable t
-;;    :lint t))
+;;    :lant t))
+
+
+;; Set scroll conervatively like in Spacemacs, to avoid FPS issues
+(setq scroll-conservatively 101)
