@@ -4,7 +4,7 @@
 (scroll-bar-mode -1) ; Disable visible scrollbar
 (tool-bar-mode -1) ; Disalbe the toolbar
 (tooltip-mode -1) ; Disable tooltips
-(set-fringe-mode 10) ; Give some breathing room
+(set-fringe-mode 0) ; Give some breathing room
 (menu-bar-mode -1) ; Disable the menu bar
 (display-battery-mode t) ; Show battery
 (display-time-mode t) ; Show time
@@ -20,11 +20,9 @@
 ;;
 
 ;; Modus Themes
-;; (add-to-list 'load-path "~/.emacs.d/modus-themes")
-;; (load-theme 'modus-operandi)            ; Light theme
+;;(add-to-list 'load-path "~/.emacs.d/modus-themes")
+;; (load-theme 'modus-vivendi)            ; Light theme
 ;; (load-theme 'modus-vivendi)             ; Dark theme
-
-;;
 
 
 ;; Mapping macOS keybindings to emacs C,M
@@ -97,44 +95,39 @@
   :config
   (ivy-mode 1))
 
-;; Bottom Modeline
-;; Config and install modeline
-(use-package doom-modeline
-  :hook (after-init . doom-modeline-mode)
-  :config
-  (custom-set-faces
-   '(mode-line ((t (:family "SF Mono" :height 0.85)))))
-  (custom-set-faces
-   '(mode-line-inactive ((t (:family "SF Mono" :height 0.85)))))
+;; ----------------------------------------------------------------------------------
+;; doom-modeline 
+;; ---
 
-  (setq doom-modeline-buffer-encoding nil
-        doom-modeline-percent-position nil
-        doom-modeline-buffer-file-name-style 'file-name
-        doom-modeline-checker-simple-format t
-        doom-modeline-vcs-max-length 50
-        doom-modeline-major-mode-icon nil
-        doom-modeline-project-detection 'projectile
-        doom-modeline-icon t
-        doom-modeline-modal t
-        doom-modeline-modal-icon nil
-        doom-modeline-lsp t
-        doom-modeline-workspace-name nil
-        doom-modeline-persp-name nil
-        doom-modeline-bar-width 5
-        doom-modeline-height 38
-        doom-modeline-hud nil
-	doom-modeline-window-width-limit 85
-	doom-modeline-project-detection 'auto
-        doom-modeline-buffer-state-icon nil
-	doom-modeline-buffer-name t
-	doom-modeline-env-enable-swift t
-        doom-modeline-time-icon nil)
-  (setq evil-normal-state-tag   (propertize "NORMAL" 'face '((:background "green" :foreground "black")))
-        evil-emacs-state-tag    (propertize "EMACS" 'face '((:background "orange" :foreground "black")))
-        evil-insert-state-tag   (propertize "INSERT" 'face '((:background "red") :foreground "white"))
-        evil-motion-state-tag   (propertize "MOTION" 'face '((:background "blue") :foreground "white"))
-        evil-visual-state-tag   (propertize "VISUAL" 'face '((:background "grey80" :foreground "black")))
-        evil-operator-state-tag (propertize "OPERATOR" 'face '((:background "purple")))))
+(require 'doom-modeline)
+(doom-modeline-mode 1)
+;; doom modeline truncate text
+(setq doom-modeline-buffer-file-name-style 'truncate-except-project)
+;; hide the time icon
+(setq doom-modeline-time-icon nil)
+;; dont display the buffer encoding.
+(setq doom-modeline-buffer-encoding nil)
+(setq doom-modeline-height 25)
+
+;----------------------------------------------------------------------------------
+;; Tab bar mode
+;; ---
+
+(use-package centaur-tabs
+  :demand
+  :config
+  (centaur-tabs-mode t)
+  :bind
+  ("C-<prior>" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-forward))
+
+(centaur-tabs-headline-match)
+(setq centaur-tabs-style "bar")
+(setq centaur-tabs-height 25)
+(setq centaur-tabs-set-icons t)
+
+;; menubar in tab bar
+(add-to-list 'tab-bar-format #'tab-bar-format-menu-bar)
 
 ;; For Emacs Parenthies checking
 (use-package rainbow-delimiters
@@ -172,7 +165,7 @@
  '(org-agenda-files
    '("~/Desktop/Org-files/PersonalDevelopment/professional-discipline.org"))
  '(package-selected-packages
-   '(kaolin-themes pdf-tools helm-icons spacemacs-theme yasnippet lsp-ui rustic rust-mode typescript-mode deno-fmt markdown-soma xcode-mode ob-swiftui centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
+   '(all-the-icons-dired modus-themes kaolin-themes pdf-tools helm-icons spacemacs-theme yasnippet lsp-ui rustic rust-mode typescript-mode deno-fmt markdown-soma xcode-mode ob-swiftui centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -336,16 +329,31 @@
 
 (add-to-list 'load-path "~/mfemacs/localpackages/")
 
-;; Bind swift run
-(defun my-swift-run ()
-  "Run 'swift run' in the current directory."
-  (interactive)
-  (compile "swift run"))
-
 (defun my-swift-build ()
   "Run 'swift build' in the current directory."
   (interactive)
-  (compile "swift build"))
+  (let ((compilation-buffer-name "*swift-build*"))
+    (compile "swift build")
+    (with-current-buffer compilation-buffer-name
+      (add-hook 'compilation-finish-functions
+                (lambda (buffer status)
+                  (when (string-match "exited abnormally" status)
+                    (run-at-time "1 sec" nil 'delete-window (get-buffer-window buffer t)))
+                  (kill-buffer buffer))
+                nil t))))
+
+(defun my-swift-run ()
+  "Run 'swift run' in the current directory."
+  (interactive)
+  (let ((compilation-buffer-name "*swift-run*"))
+    (compile "swift run")
+    (with-current-buffer compilation-buffer-name
+      (add-hook 'compilation-finish-functions
+                (lambda (buffer status)
+                  (when (string-match "exited abnormally" status)
+                    (run-at-time "1 sec" nil 'delete-window (get-buffer-window buffer t)))
+                  (kill-buffer buffer))
+                nil t))))
 
 (use-package swift-mode
   :defer t
@@ -620,3 +628,15 @@
   :after (treemacs)
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
+
+;; Custom function to close compilation buffer after program finished
+(defun my/close-compilation-buffer-if-successful (buffer string)
+  "Close the compilation BUFFER if the process exits successfully."
+  (when (and (buffer-live-p buffer)
+             (string-match "compilation" (buffer-name buffer)))
+    (if (string-match "exited abnormally" string)
+        (message "Compilation failed.")
+      (run-with-timer 1 nil 'kill-buffer buffer)
+      (message "Compilation successful. Closing buffer in 1 second."))))
+
+(add-to-list 'compilation-finish-functions 'my/close-compilation-buffer-if-successful)
