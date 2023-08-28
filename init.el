@@ -109,22 +109,7 @@
 (setq doom-modeline-buffer-encoding nil)
 (setq doom-modeline-height 25)
 
-;----------------------------------------------------------------------------------
-;; Tab bar mode
-;; ---
-
-(use-package centaur-tabs
-  :demand
-  :config
-  (centaur-tabs-mode t)
-  :bind
-  ("C-<prior>" . centaur-tabs-backward)
-  ("C-<next>" . centaur-tabs-forward))
-
-(centaur-tabs-headline-match)
-(setq centaur-tabs-style "bar")
-(setq centaur-tabs-height 25)
-(setq centaur-tabs-set-icons t)
+;;;;;;;;;;;;;;;;;;;
 
 ;; menubar in tab bar
 (add-to-list 'tab-bar-format #'tab-bar-format-menu-bar)
@@ -185,7 +170,7 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 (use-package doom-themes
-  :init (load-theme 'zenburn t))
+  :init (load-theme 'doom-city-lights t))
 
 
 (use-package all-the-icons
