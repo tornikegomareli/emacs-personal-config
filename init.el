@@ -1,4 +1,4 @@
-;; General Settings
+; General Settings
 
 
 (scroll-bar-mode -1) ; Disable visible scrollbar
@@ -172,7 +172,7 @@
  '(org-agenda-files
    '("~/Desktop/Org-files/PersonalDevelopment/professional-discipline.org"))
  '(package-selected-packages
-   '(pdf-tools helm-icons spacemacs-theme yasnippet lsp-ui rustic rust-mode typescript-mode deno-fmt markdown-soma xcode-mode ob-swiftui centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
+   '(kaolin-themes pdf-tools helm-icons spacemacs-theme yasnippet lsp-ui rustic rust-mode typescript-mode deno-fmt markdown-soma xcode-mode ob-swiftui centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -192,7 +192,7 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 (use-package doom-themes
-  :init (load-theme 'modus-vivendi t))
+  :init (load-theme 'zenburn t))
 
 
 (use-package all-the-icons
@@ -224,6 +224,8 @@
     "t"  '(:ignore t :which-key "toggles")
     "tt" '(counsel-load-theme :which-key "choose theme")
     "ts" '(hydra-text-scale/body :which-key "scale text")
+    "sr"  'my-swift-run
+    "sb"  'my-swift-build
     "c"  'open-init-file))
  
 
@@ -334,6 +336,17 @@
 
 (add-to-list 'load-path "~/mfemacs/localpackages/")
 
+;; Bind swift run
+(defun my-swift-run ()
+  "Run 'swift run' in the current directory."
+  (interactive)
+  (compile "swift run"))
+
+(defun my-swift-build ()
+  "Run 'swift build' in the current directory."
+  (interactive)
+  (compile "swift build"))
+
 (use-package swift-mode
   :defer t
   :mode "\\.swift\\'"
@@ -347,6 +360,8 @@
 (add-hook 'swift-mode-hook
           (lambda ()
             (electric-pair-mode 1)
+	    (setq tab-width 2)
+	    (setq indent-tabs-mode nil)
             (setq electric-pair-pairs '((?{ . ?})))
             (setq electric-pair-text-pairs '((?{ . ?})))
             ))
@@ -432,14 +447,18 @@
   ;; enable / disable the hints as you prefer:
   ;; (lsp-inlay-hint-enable nil) ;; This option turns on hints if there is such in Rust or Swift analyzer.
   ;; (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  (lsp-rust-analyzer-display-chaining-hints t) ;; Chain hints
   ;;(lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  (lsp-rust-analyzer-display-closure-return-type-hints t) ;; Closure hints
   ;; (lsp-rust-analyzer-display-parameter-hints nil) ;; Parameters Hints
+
+
+  (lsp-rust-analyzer-display-chaining-hints t) ;; Chain hints
+  (lsp-rust-analyzer-display-closure-return-type-hints t) ;; Closure hints
+
   (lsp-rust-analyzer-display-reborrow-hints nil) ;; Reborrow hints
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
+(setq lsp-ui-sideline-enable nil) ;; Disable sideline hints
 (use-package lsp-ui
   :ensure
   :commands lsp-ui-mode
@@ -468,6 +487,9 @@
   (add-hook 'prog-mode-hook 'yas-minor-mode)
   (add-hook 'text-mode-hook 'yas-minor-mode))
 
+;; Rust format in rust mode
+(setq rust-format-on-save t)
+
 
 ;; Deno EGLOT
 ;; (add-to-list 'eglot-server-programs '((js-mode typescript-mode) . (eglot-deno "deno" "lsp")))
@@ -482,9 +504,6 @@
 
 ;; Set scroll conervatively like in Spacemacs, to avoid FPS issues
 (setq scroll-conservatively 101)
-
-
-
 
 ;; treemacs
 (use-package treemacs
