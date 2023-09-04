@@ -9,11 +9,15 @@
 (display-battery-mode t) ; Show battery
 (display-time-mode t) ; Show time
 
+
+;; Remove border
+(add-to-list 'default-frame-alist '(undecorated . t))
+
 ;; Make ESCc qquit prompts
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Theme
-(set-face-attribute 'default nil :font "Monaco" :height 170)
+(set-face-attribute 'default nil :font "Berkeley Mono Trial" :height 170)
 
 ;; Make Full screen when open Emacs
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -150,7 +154,7 @@
  '(org-agenda-files
    '("~/Desktop/Org-files/PersonalDevelopment/professional-discipline.org"))
  '(package-selected-packages
-   '(all-the-icons-dired modus-themes kaolin-themes pdf-tools helm-icons spacemacs-theme yasnippet lsp-ui rustic rust-mode typescript-mode deno-fmt markdown-soma xcode-mode ob-swiftui centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
+   '(helm all-the-icons-dired modus-themes kaolin-themes pdf-tools helm-icons spacemacs-theme yasnippet lsp-ui rustic rust-mode typescript-mode deno-fmt markdown-soma xcode-mode ob-swiftui centaur-tabs nerd-icons-dired treemacs-projectile treemacs-evil treemacs-magit treemacs dashboard evil-magit magit counsel-projectile projectile hydra evil-collection evil general all-the-icons which-key use-package rainbow-delimiters ivy-rich helpful doom-themes doom-modeline counsel)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -170,7 +174,7 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 (use-package doom-themes
-  :init (load-theme 'doom-city-lights t))
+  :init (load-theme 'spacemacs-dark t))
 
 
 (use-package all-the-icons
