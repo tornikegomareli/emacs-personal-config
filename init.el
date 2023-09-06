@@ -17,7 +17,7 @@
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Theme
-(set-face-attribute 'default nil :font "Berkeley Mono Trial" :height 170)
+(set-face-attribute 'default nil :font "Iosevka Fixed Medium" :height 170)
 
 ;; Make Full screen when open Emacs
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
