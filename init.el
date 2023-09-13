@@ -629,3 +629,7 @@
       (message "Compilation successful. Closing buffer in 1 second."))))
 
 (add-to-list 'compilation-finish-functions 'my/close-compilation-buffer-if-successful)
+
+
+;; Make tabs work in Makefile
+(add-hook 'makefile-mode-hook (lambda () (setq indent-tabs-mode t)))
