@@ -401,6 +401,8 @@
   (ansi-color-apply-on-region compilation-filter-start (point-max)))
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
+(use-package flycheck :ensure)
+
 ;; Rustik
 (use-package rustic
   :ensure
@@ -442,10 +444,10 @@
   (lsp-eldoc-render-all t)
   (lsp-idle-delay 0.6)
   ;; enable / disable the hints as you prefer:
-  ;; (lsp-inlay-hint-enable nil) ;; This option turns on hints if there is such in Rust or Swift analyzer.
+   (lsp-inlay-hint-enable nil) ;; This option turns on hints if there is such in Rust or Swift analyzer.
   ;; (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  ;;(lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  ;; (lsp-rust-analyzer-display-parameter-hints nil) ;; Parameters Hints
+  ;; (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-parameter-hints nil) ;; Parameters Hints
 
 
   (lsp-rust-analyzer-display-chaining-hints t) ;; Chain hints
@@ -633,3 +635,11 @@
 
 ;; Make tabs work in Makefile
 (add-hook 'makefile-mode-hook (lambda () (setq indent-tabs-mode t)))
+
+(defun tornike-rustic-mode-setup ()
+  (when (and (eq major-mode 'rustic-mode) (locate-dominating-file "." "rustfmt.toml"))
+    (let ((rustfmt-config (expand-file-name "rustfmt.toml" (locate-dominating-file "." "rustfmt.toml"))))
+      (setq-local rustic-format-trigger 'on-save)
+      (setq-local rustic-rustfmt-config-alist `((:config . ,rustfmt-config))))))
+
+(add-hook 'rustic-mode-hook 'tornike-rustic-mode-setup)
